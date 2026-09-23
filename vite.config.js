@@ -1,15 +1,50 @@
-// vite.config.js
-import { resolve } from 'path'
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vite';
+import { ViteEjsPlugin } from 'vite-plugin-ejs';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+import { glob } from 'glob';
 
-export default defineConfig({
+import liveReload from 'vite-plugin-live-reload';
+
+function moveOutputPlugin() {
+  return {
+    name: 'move-output',
+    enforce: 'post',
+    apply: 'build',
+    generateBundle(_, bundle) {
+      for (const fileName in bundle) {
+        if (fileName.startsWith('pages/')) {
+          const newFileName = fileName.slice('pages/'.length);
+          bundle[fileName].fileName = newFileName;
+        }
+      }
+    },
+  };
+}
+
+export default defineConfig(({ command }) => ({
+  // base 的寫法：
+  // base: '/Repository 的名稱/'
+  base: command === 'build' ? '/morte/' : '/',
+  plugins: [
+    liveReload(['./layout/**/*.ejs', './pages/**/*.html']),
+    ViteEjsPlugin(),
+    moveOutputPlugin(),
+  ],
+  server: {
+    // 啟動 server 時預設開啟的頁面
+    open: 'pages/index.html',
+  },
   build: {
     rollupOptions: {
-      input: {
-        main: resolve(__dirname, 'index.html'),
-        portfolio: resolve(__dirname, 'portfolio.html'),
-        'entrustment-notice': resolve(__dirname, 'entrustment-notice.html'),
-      },
+      input: Object.fromEntries(
+        glob
+          .sync('pages/**/*.html')
+          .map((file) => [
+            path.relative('pages', file.slice(0, file.length - path.extname(file).length)),
+            fileURLToPath(new URL(file, import.meta.url)),
+          ])
+      ),
     },
   },
-})
+}));
