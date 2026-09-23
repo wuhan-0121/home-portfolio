@@ -3,7 +3,10 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: "Roboto", sans-serif;
+  
 }
+
 
 nav{
   display: grid;
@@ -227,26 +230,25 @@ nav{
     position: absolute;
     left: 0;
     top: 0;
+    display: flex;
+
   }
   .footer-right-line{
     position: absolute;
     right: 0;
     bottom: 0;
+    display: flex;
   }
 }
 
 
 @keyframes slide {
   0% { 
-    transform: translateX(-240px) skewX(135deg); 
+    transform: translateX(200px) skewX(135deg); 
     opacity: 20%;
   }
-  25% { 
-    transform: translateX(250px) skewX(135deg); 
-    opacity: 60%;
-  }
-  75% { 
-    transform: translateX(400px) skewX(135deg); 
+  50% { 
+    transform: translateX(300px) skewX(135deg); 
     opacity: 40%;
   }
   100% { 
