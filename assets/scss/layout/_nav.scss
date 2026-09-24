@@ -25,14 +25,8 @@ nav{
         display: flex;
         fill: #777777;
       }
-      &:hover{
-        background-color: #DEE0FF;
-        color: #403E84;
-        svg{
-          fill: #403E84;
-        }
-      }
-      &:active{
+      &:hover,
+      &.is-active{
         background-color: #DEE0FF;
         color: #403E84;
         svg{
