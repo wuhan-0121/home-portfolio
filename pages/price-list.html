@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/public/logo.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <title>無風亦無寒</title>
+  </head>
+  <body>
+    <%- include('./layout/header', { page: 'price-list' }); -%>
+    <div class="entrustment-container">
+      <!-- 電腦版點圖片開大圖（燈箱），手機版不作用：邏輯在 main.js 的 .price-images 區塊 -->
+      <div class="price-images">
+        <button class="price-image-btn" type="button" aria-label="放大查看委託流程圖">
+          <img src="/流程圖_00000.png" alt="委託流程圖" />
+        </button>
+        <button class="price-image-btn" type="button" aria-label="放大查看價目表">
+          <img src="/新價目表_00000.png" alt="價目表" />
+        </button>
+        <button class="price-image-btn" type="button" aria-label="放大查看價目表 2">
+          <img src="/新價目表 2_00000.png" alt="價目表 2" />
+        </button>
+      </div>
+      <dialog class="lightbox" aria-label="大圖檢視">
+        <img class="lightbox-img" src="" alt="" />
+        <button class="lightbox-close" type="button" aria-label="關閉">
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.4 19L5 17.6l5.6-5.6L5 6.4L6.4 5l5.6 5.6L17.6 5L19 6.4L13.4 12l5.6 5.6l-1.4 1.4l-5.6-5.6z"/></svg>
+        </button>
+        <button class="lightbox-prev" type="button" aria-label="上一張">
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m14 18l-6-6l6-6l1.4 1.4l-4.6 4.6l4.6 4.6z"/></svg>
+        </button>
+        <button class="lightbox-next" type="button" aria-label="下一張">
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.6 12L8 7.4L9.4 6l6 6l-6 6L8 16.6z"/></svg>
+        </button>
+      </dialog>
+      <!-- 估價小工具：計算邏輯在 main.js 的 .estimator 區塊 -->
+      <form class="estimator" id="estimator">
+        <h2 class="estimator-title">估價小工具</h2>
+        <label class="estimator-field">
+          <span class="estimator-label">委託項目</span>
+          <select name="item">
+            <option value="one-image">PV｜一圖流（簡易特效）</option>
+            <option value="lyrics">PV｜歌詞排版</option>
+            <option value="pv">PV｜非一圖流（不含3D特效）</option>
+            <option value="edit">影視剪輯</option>
+            <option value="loop">插圖動態｜10秒內循環動態影片</option>
+            <option value="camera">插圖動態｜含明顯運鏡10秒內循環影片</option>
+          </select>
+        </label>
+        <div class="estimator-field estimator-duration" hidden>
+          <span class="estimator-label">影片長度</span>
+          <div class="estimator-time">
+            <input type="number" name="min" min="0" value="1" inputmode="numeric" aria-label="分" /><span>分</span>
+            <input type="number" name="sec" min="0" max="59" value="0" inputmode="numeric" aria-label="秒" /><span>秒</span>
+          </div>
+        </div>
+        <div class="estimator-options">
+          <label><input type="checkbox" name="commercial" />商用（×2.5）</label>
+          <label><input type="checkbox" name="rush" />急件（×1.5）</label>
+        </div>
+        <div class="estimator-result">
+          <span class="estimator-label">預估金額</span>
+          <output class="estimator-total" name="total">—</output>
+        </div>
+        <p class="qa-remark estimator-remark">※ 僅供參考，實際金額以報價為準。</p>
+      </form>
+    </div>
+    <%- include('./layout/footer'); -%>
+    <script type="module" src="../main.js"></script>
+  </body>
+</html>

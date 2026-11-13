@@ -1,0 +1,195 @@
+@use '../base/variables' as *;
+
+// 價目表：估價小工具
+.estimator{
+  width: calc(100% - 32px);
+  max-width: 1000px;
+  margin: 0 auto 48px;
+  box-sizing: border-box;
+  // 首頁「試算報價」連到 #estimator，留出 sticky nav 的高度避免被蓋住
+  scroll-margin-top: 96px;
+  padding: 24px;
+  border: 1px solid $gray-200;
+  border-radius: 8px;
+  background-color: $white;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-size: 16px;
+  line-height: 24px;
+  color: $gray-600;
+  .estimator-title{
+    font-size: 18px;
+    line-height: 28px;
+    color: $primary;
+  }
+  .estimator-field{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    &[hidden]{
+      display: none;
+    }
+  }
+  .estimator-label{
+    font-weight: 700;
+  }
+  select,
+  input[type="number"]{
+    box-sizing: border-box;
+    padding: 8px 12px;
+    border: 1px solid $gray-200;
+    border-radius: 4px;
+    font-size: 16px;
+    color: $gray-600;
+    background-color: $white;
+    &:focus{
+      outline: none;
+      border-color: $purple-500;
+    }
+  }
+  .estimator-time{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    input{
+      width: 80px;
+    }
+  }
+  .estimator-options{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    label{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+    input{
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      accent-color: $primary;
+    }
+  }
+  .estimator-result{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 16px;
+    border-radius: 4px;
+    background-color: $purple-50;
+  }
+  .estimator-total{
+    font-size: 22px;
+    line-height: 28px;
+    font-weight: 700;
+    color: $primary;
+  }
+  .estimator-remark{
+    margin-top: 0;
+  }
+}
+
+// 價目表：流程圖、價目表圖檔
+.price-images{
+  width: calc(100% - 32px);
+  max-width: 1000px;
+  margin: 48px auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  @media (max-width: 767px){
+    grid-template-columns: 1fr;
+  }
+  img{
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  // 圖片包在按鈕裡，電腦版可點開大圖；手機版當一般圖片顯示
+  .price-image-btn{
+    position: relative;
+    display: block;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: default;
+  }
+  // 電腦版：游標變成放大鏡，提示可以點開大圖
+  @media (min-width: 768px){
+    .price-image-btn{
+      cursor: zoom-in;
+    }
+  }
+}
+
+// 燈箱（大圖檢視）：用原生 <dialog>，Esc 關閉由瀏覽器處理
+.lightbox{
+  // reset 把所有 margin 歸零，會讓 dialog 失去瀏覽器預設的置中，這裡補回來
+  margin: auto;
+  inset: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  max-width: none;
+  max-height: none;
+  overflow: visible;
+  &::backdrop{
+    background-color: rgba($black, .8);
+  }
+  .lightbox-img{
+    display: block;
+    max-width: calc(100vw - 160px); // 左右各留 80px 給箭頭
+    max-height: calc(100vh - 160px); // 上下各留 80px，上方放關閉鈕
+    width: auto;
+    height: auto;
+  }
+  button{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: $white; // 白色箭頭、無底色
+    cursor: pointer;
+    opacity: .7;
+    transition: opacity .2s;
+    &:hover,
+    &:focus-visible{
+      opacity: 1;
+    }
+    svg{
+      width: 48px;
+      height: 48px;
+    }
+  }
+  // 關閉鈕固定在整個畫面右上角（距邊緣 24px），左右箭頭在圖片兩側外面
+  .lightbox-close{
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    svg{
+      width: 36px;
+      height: 36px;
+    }
+  }
+  .lightbox-prev,
+  .lightbox-next{
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .lightbox-prev{
+    left: -64px;
+  }
+  .lightbox-next{
+    right: -64px;
+  }
+}

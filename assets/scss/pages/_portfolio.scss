@@ -1,19 +1,18 @@
+@use '../base/variables' as *;
+
 .portfolio{
-  background-color: #F9F9F9;
+  background-color: $gray-50;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0 124px;
-  @media (max-width: 768px) {
-    padding: 0 16px;
-  }
   .portfolio-container{
+    box-sizing: border-box;
+    padding: 0px 24px 80px; // 底部 80px：跟 footer 拉開距離（有分頁、暫無內容都適用）
     width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fill, min(328px, 100%));
     justify-content: center;
     column-gap: 24px;
-    
   }
   .video-tabs,
   .line,
@@ -22,25 +21,37 @@
     grid-column: 1 / -1;
   }
   .video-tabs{
-    padding: 32px 0px;
+    margin: 24px 0px;
+    padding: 16px 16px 0px 16px;
     box-sizing: border-box;
     display: flex;
     flex-wrap: wrap;
-    gap: 24px;
+    gap: 12px; // 手機版：上下左右都 12px
+    @media (min-width: 768px){
+      gap: 16px; // 電腦版間隔加寬
+    }
+    // 膠囊（chip）樣式：篩選器用色塊表現，跟 header 選單的「文字＋線條」做出區別
     button{
+      box-sizing: border-box;
+      border: 1px solid $gray-200;
+      border-radius: 999px;
       cursor: pointer;
-      border: 1px solid #E2E2E2;
-      border-radius: 4px;
-      color:#777777;
-      padding: 4px 16px;
-      background-color: #FFFFFF;
-      font-size: 22px;
-      line-height: 28px;
-      &:hover,
+      color: $gray-500;
+      padding: 6px 16px;
+      background-color: $white;
+      font-size: 14px;
+      line-height: 20px;
+      white-space: nowrap;
+      transition: color .2s, border-color .2s, background-color .2s;
+      &:hover{
+        color: $primary;
+        border-color: $purple-300;
+      }
+      // 選中：實心主色底、白字
       &.is-active{
-        background-color: #E2DFFF;
-        color: #5A5892;
-        border-color: #8B89D4;
+        color: $white;
+        border-color: $primary;
+        background-color: $primary;
       }
     }
   }
@@ -71,21 +82,21 @@
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 4;
-      fill: #FFFFFF;
+      fill: $white;
      }
   }
   .video-name{
     margin-top: 8px;
-    font-size: 22px;
-    line-height: 28px;
-    color:#5A5892;
+    font-size: 16px;
+    line-height: 24px;
+    color:$purple-700;
   }
   .video-empty{
     padding: 80px 0;
     text-align: center;
     font-size: 22px;
     line-height: 28px;
-    color: #777777;
+    color: $gray-500;
   }
 
   .page{
@@ -97,6 +108,39 @@
     gap: 8px;
     &[hidden]{
       display: none;
+    }
+    .page-ellipsis{
+      color: $gray-500;
+      cursor: default;
+      user-select: none;
+    }
+    // 頁碼按鈕：方形圓角，目前頁（main.js 加 .is-active）底紫色字白色
+    .page-btn{
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid $gray-200;
+      border-radius: 4px;
+      background-color: $white;
+      color: $gray-500;
+      font-size: 16px;
+      line-height: 24px;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+      &:hover{
+        background-color: $purple-100;
+        color: $purple-700;
+        border-color: $purple-500;
+      }
+      &.is-active{
+        background-color: $primary;
+        color: $white;
+        border-color: $primary;
+        cursor: default;
+      }
     }
   }
 }

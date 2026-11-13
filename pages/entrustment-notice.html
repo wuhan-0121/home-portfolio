@@ -3,15 +3,208 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/public/logo.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <title>entrustment-notice</title>
+    <title>無風亦無寒</title>
   </head>
   <body>
     <%- include('./layout/header', { page: 'entrustment-notice' }); -%>
-
+    <div class="entrustment-container">
+      <div class="qa-list">
+        <div class="qa-item">
+          <button type="button" class="qa-question" aria-expanded="false">
+            <span class="qa-title">PV委託</span>
+            <%- include('./layout/qa-arrow'); -%>
+          </button>
+          <div class="qa-answer">
+            <div class="qa-answer-inner">
+              <ul class="qa-points">
+                <li>
+                  <p class="qa-point-title">曲繪（必備，至少一張）</p>
+                  <ul class="qa-notes">
+                    <li>可以是png、jpg、psd檔</li>
+                    <li>圖檔大小需大於1920x1080px</li>
+                  </ul>
+                </li>
+                <li>
+                  <p class="qa-point-title">音檔（必備）</p>
+                  <ul class="qa-notes">
+                    <li>音樂使用授權及版權問題由委託方自行確認</li>
+                  </ul>
+                </li>
+                <li>
+                  <p class="qa-point-title">素材（選擇性提供）</p>
+                  <ul class="qa-notes">
+                    <li>提供的素材需自行確認使用權利</li>
+                  </ul>
+                </li>
+                <li>
+                  <p class="qa-point-title">參考風格（選擇性提供）</p>
+                  <ul class="qa-notes">
+                    <li>做不了的部分會在這個階段提出</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="qa-item">
+          <button type="button" class="qa-question" aria-expanded="false">
+            <span class="qa-title">影視剪輯委託</span>
+            <%- include('./layout/qa-arrow'); -%>
+          </button>
+          <div class="qa-answer">
+            <div class="qa-answer-inner">
+              <ul class="qa-points">
+                <li>
+                  <p class="qa-point-title">片源檔案（必備，或確認我方已有該片源）</p>
+                  <ul class="qa-notes">
+                    <li>若需由我方觀看完整影視作品，將依片源長度另行報價</li>
+                  </ul>
+                </li>
+                <li>
+                  <p class="qa-point-title">音檔（必備）</p>
+                  <ul class="qa-notes">
+                    <li>音樂使用授權及版權問題由委託方自行確認</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="qa-item">
+          <button type="button" class="qa-question" aria-expanded="false">
+            <span class="qa-title">插圖動態委託</span>
+            <%- include('./layout/qa-arrow'); -%>
+          </button>
+          <div class="qa-answer">
+            <div class="qa-answer-inner">
+              <ul class="qa-points">
+                <li>
+                  <p class="qa-point-title">圖檔（必備）</p>
+                  <ul class="qa-notes">
+                    <li>圖檔請優先提供已拆件檔案</li>
+                    <li>未拆件檔案僅提供「簡易」拆件，精細拆件請由委託方自行處理</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="qa-item">
+          <button type="button" class="qa-question" aria-expanded="false">
+            <span class="qa-title">修改規範</span>
+            <%- include('./layout/qa-arrow'); -%>
+          </button>
+          <div class="qa-answer">
+            <div class="qa-answer-inner">
+              <ul class="qa-points">
+                <li>
+                  <p class="qa-point-title">製作中的修正不計入修改次數</p>
+                  <ul class="qa-notes">
+                    <li>製作過程中會提供進度確認</li>
+                  </ul>
+                </li>
+                <li>
+                  <p class="qa-point-title">一圖流、歌詞排版</p>
+                  <ul class="qa-notes">
+                    <li>不含修改，若有修改需求將另行報價</li>
+                  </ul>
+                </li>
+                <li>
+                  <p class="qa-point-title">非一圖流 PV、影視剪輯、插圖動態</p>
+                  <ul class="qa-notes">
+                    <li>完稿後可修改三次，超過次數將酌收修改費</li>
+                    <li>同一輪提出的修改內容視為一次修改，請盡量集中提出</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="qa-item">
+          <button type="button" class="qa-question" aria-expanded="false">
+            <span class="qa-title">使用規範</span>
+            <%- include('./layout/qa-arrow'); -%>
+          </button>
+          <div class="qa-answer">
+            <div class="qa-answer-inner">
+              <ul class="qa-points">
+                <li>
+                  <p class="qa-point-title">非商</p>
+                  <ul class="qa-notes">
+                    <li>可以上傳至個人帳號，但不得用於營利目的，若帳號/頻道本身具有商業營利性質，請於委託前告知</li>
+                    <li>若有營利行為（如yt特別感謝或插入廣告等），將依商用價格補足差額</li>
+                  </ul>
+                </li>
+                <li>
+                  <p class="qa-point-title">商用</p>
+                  <ul class="qa-notes">
+                    <li>非商定價乘2.5</li>
+                  </ul>
+                </li>
+                <li>
+                  <p class="qa-point-title">成品使用</p>
+                  <ul class="qa-notes">
+                    <li>不得將委託成品二次販售、轉售或作為商品的一部分販售</li>
+                    <li>不得將委託成品或製作素材用於 AI 訓練</li>
+                    <li>不得將委託成品或其素材拆分後作為素材包、素材資源等提供或販售</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="qa-item">
+          <button type="button" class="qa-question" aria-expanded="false">
+            <span class="qa-title">退單規範</span>
+            <%- include('./layout/qa-arrow'); -%>
+          </button>
+          <div class="qa-answer">
+            <div class="qa-answer-inner">
+              <ul class="qa-points">
+                <li>可在製作期間（資料提供完整後的三週內）喊停但訂金（委託金額半款）不退。</li>
+                <li>初版完成後取消委託，仍須支付剩餘尾款。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="qa-item">
+          <button type="button" class="qa-question" aria-expanded="false">
+            <span class="qa-title">其他委託注意事項</span>
+            <%- include('./layout/qa-arrow'); -%>
+          </button>
+          <div class="qa-answer">
+            <div class="qa-answer-inner">
+              <ul class="qa-points">
+                <li>影片輸出規格默認為1080p，橫/直式比例依委託需求製作；如有更高輸出需求將酌量增加收費。</li>
+                <li>成品預設提供 MP4 檔案，如需其他格式請於委託前提出。</li>
+                <li>製作期至少預留三個周末，三個周末內需完成視為急件將另行報價。</li>
+                <li>初版後可進行合理範圍內的修改；若涉及大幅修改或製作方向變更，將視情況另行報價。</li>
+                <li>除非另有約定，不交付製作原始檔案。</li>
+                <li>影片檔案僅於雲端保存一個月，逾期後連結將失效，請於期限內自行下載備份。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="qa-item">
+          <button type="button" class="qa-question" aria-expanded="false">
+            <span class="qa-title">收款方式</span>
+            <%- include('./layout/qa-arrow'); -%>
+          </button>
+          <div class="qa-answer">
+            <div class="qa-answer-inner">
+              <ul class="qa-points">
+                <li>玉山銀行、國泰世華、郵局</li>
+                <li>海外走paypal（會加收5%手續費）</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <%- include('./layout/footer'); -%>
     <script type="module" src="../main.js"></script>
   </body>

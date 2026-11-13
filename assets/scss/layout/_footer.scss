@@ -1,6 +1,7 @@
+@use '../base/variables' as *;
+
 .footer{
-  margin-top: 72px;
-  background-color: #8B89D4;
+  background-color: $purple-500;
   position: relative;
   height: 144px;
   box-sizing: border-box;
@@ -13,13 +14,24 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 28px;
     a{
+      display: flex;
       text-decoration: none;
+      color: $white; // icon 用 currentColor，跟著這裡變色
+      transition: opacity .2s;
+      &:hover{
+        opacity: .7;
+      }
+    }
+    // 統一 icon 高度，寬度依各自比例自動算（覆蓋 svg 上寫死的 48px）
+    svg{
+      width: auto;
+      height: 32px;
     }
   }
   .note{
-    color: white;
+    color: $white;
     font-size: 16px;
     line-height: 24px;
   }
@@ -35,5 +47,15 @@
     right: 0;
     bottom: 0;
     display: flex;
+  }
+  // 手機版：左上、右下的斜線裝飾縮小（依比例縮放，304×24 → 160×約13）
+  @media (max-width: 767px){
+    .footer-line,
+    .footer-right-line{
+      svg{
+        width: 160px;
+        height: auto;
+      }
+    }
   }
 }

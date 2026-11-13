@@ -1,173 +1,406 @@
+@use '../base/variables' as *;
+
+.index-container{
+ padding-bottom: 24px;
+}
+
+
 .hero{
-  position: relative;
   video{
+    display: block;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
     max-height: 600px;
     width: 100%;
     object-fit: cover;
   }
-  .avatar{
-    position: absolute;
-    bottom: -68px;
-    margin-left: 124px;
-    max-width: 240px;
-    max-height: 240px;
-    box-sizing: border-box;
-    border: 8px solid white;
-    border-radius: 50%;
-    overflow: hidden;
-    img{
-      max-width: 100%;  /* 寬度最多跟外框一樣大 */
-      max-height: 100%; /* 高度最多跟外框一樣大 */
-      height: auto; 
+}
 
+// 名片區：只放一張名片，置中
+.business-card{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 1032px;
+  margin: 24px auto;
+  box-sizing: border-box;
+  // 名片：360×216 的框，裡面放客戶提供的圖檔，浮水印疊在右下角
+  .business-card-content{
+    --wiggle-speed: 0.9s; // hover 時浮水印晃動的時間
+    position: relative;
+    width: 360px;
+    height: 216px;
+    box-sizing: border-box;
+    background-color: rgb(74, 44, 106); // 圖還沒載入時的底色
+    box-shadow: 0px 0px 4px 1px rgba($primary, 0.25);
+    border-radius: 4px;
+    overflow: hidden; // 浮水印超出卡片的部分裁掉
+
+    // 名片圖檔：填滿整個框，比例不同時裁切置中
+    .card-image{
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  // 浮水印：public/水印底.svg 的圖（svg 直接寫在 pages/index.html），放大、斜放在右下角
+  // 圖是用 currentColor 上色，改 --watermark-color 就能換填色
+  .card-watermark{
+    --watermark-color: #{$purple-600}; // 浮水印顏色，想換改這裡
+    position: absolute;
+    right: -40px;
+    bottom: -40px;
+    width: 200px;
+    height: 200px;
+    color: var(--watermark-color);
+    transform: rotate(-20deg); // 傾斜角度：負數越大越往左轉
+    pointer-events: none;
+    svg{
+      display: block;
+      width: 100%;
+      height: 100%;
+      transform-origin: 50% 80%; // 晃動的支點，偏下面一點像不倒翁
+    }
+  }
+  // hover 名片時浮水印左右晃動；晃動的幅度、次數在 @keyframes watermark-wiggle 調
+  .business-card-content:hover .card-watermark svg{
+    animation: watermark-wiggle var(--wiggle-speed) ease-in-out;
+  }
+
+  // 系統開了「減少動態效果」的使用者：不晃
+  @media (prefers-reduced-motion: reduce){
+    .business-card-content:hover .card-watermark svg{
+      animation: none;
+    }
+  }
+
+  // 手機版：左右留白
+  @media (max-width: 767px){
+    padding: 24px 16px;
+    .business-card-content{
+      max-width: 100%; // 螢幕比 360px 還窄時不要撐破版面
     }
   }
 }
 
 .line{
-  margin-top: 72px;
   display: flex;
   justify-content: center;
   svg{
-    fill: black;
+    fill: $purple-100;
+    // 電腦版：佔滿內容寬度（最寬 1032px，跟 business-card、卡片區同寬），高度等比例
+    width: 100%;
+    max-width: 1032px;
+    height: auto;
+  }
+  // 手機版：原本整條 1032px 會被縮到螢幕寬，花紋變很小
+  // 改成固定 640px 寬、左右超出的部分裁掉，只留中間對稱的那段
+  @media (max-width: 767px){
+    overflow: hidden;
+    svg{
+      flex-shrink: 0;
+      width: 640px;
+      height: auto;
+    }
   }
 }
 
 .menu-bg{
-  background-color: #f9f9f9;
-  width: 1032px;
+  width: 100%;
+  max-width: 1032px; // 電腦版最寬 1032px，螢幕比較窄時跟著縮
   box-sizing: border-box;
   padding: 16px;
   margin: 24px auto;
-}
 
-.menu{
-  border: 2px solid #8B89D4;
-  padding: 48px 0px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  .name{
-    font-size: 45px;
-    line-height: 52px;
-  }
-  .en-name{
-    font-size: 16px;
-    line-height: 24px;
-    color: #C6C6C6;
-  }
-  .job-title{
-    color:#716FB8;
-    font-size: 16px;
-    line-height: 24px;
-  }
   .tag{
-    margin-top: 8px;
+    font-size: 14px;
+    line-height: 20px;
+    background-color: $primary;
+    color: $white;
+    padding: 4px 12px;
+  }
+  .title{
     font-size: 22px;
     line-height: 28px;
-    color: black;
+    color: $primary;
+  }
+  .desc{
+    font-size: 12px;
+    line-height: 16px;
+    color: $gray-500;
+  }
+  .price{
+    font-size: 32px;
+    line-height: 40px;
+    color: $primary;
+    font-weight: 500;
+  }
+  .horizontal-card{
+    display: grid;
+    grid-template-columns: repeat(12, 1fr); 
+    gap: 24px;
+    padding: 16px 0px;
+    background-image: linear-gradient(to right, $purple-400 50%, rgba($white, 0) 0%);
+    background-position: bottom;
+    background-size: 8px 2px;
+    background-repeat: repeat-x;
+    .card-img{
+      grid-column: span 6; 
+      img{
+        width: 100%;
+        height: auto;
+        box-shadow: 0px 4px 4px rgba($black, 0.25);
+      }
+    }
+    .content{
+      grid-column: span 6; 
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    &.last{
+      background-position: top;
+    }
+  }
+  .card-container{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 24px;
+    padding: 16px 0px;
+    .vertical-card{
+      background-image: linear-gradient( $purple-400 50%, rgba($white, 0) 0%);
+      background-position: right;
+      background-size: 2px 8px;
+      background-repeat: repeat-y;
+    }
+  }
+  .vertical-card{
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      align-items: center;
+      gap: 24px;
+      img{
+        width: 100%;
+        aspect-ratio: 9 / 16; 
+        object-fit: cover;  
+        box-shadow: 0px 4px 4px rgba($black, 0.25);
+      }
+      .content{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 8px;
+      }
   }
 
-  .card-group{
-    width: 100%;
-    padding: 24px 64px 48px 64px;
+  // 手機版：全部改成一欄由上往下排
+  @media (max-width: 767px){
+    margin: 16px auto;
+    padding: 16px 24px; // 左右 24px，兩側留多一點空間
+    .title{
+      font-size: 20px;
+      line-height: 28px;
+    }
+    .price{
+      font-size: 28px;
+      line-height: 36px;
+    }
+    // 大橫卡：圖片在上、文字在下（最後一張 HTML 是文字在前，用 order 統一成圖片在上）
+    .horizontal-card{
+      grid-template-columns: 1fr;
+      gap: 16px;
+      .card-img,
+      .content{
+        grid-column: auto;
+      }
+      .card-img{
+        order: -1;
+      }
+    }
+    // Shorts 和右邊那組小卡改成上下排，中間的直虛線改成橫虛線
+    .card-container{
+      grid-template-columns: 1fr;
+      .vertical-card{
+        gap: 16px;
+        padding-bottom: 24px;
+        background-image: linear-gradient(to right, $purple-400 50%, rgba($white, 0) 0%);
+        background-position: bottom;
+        background-size: 8px 2px;
+        background-repeat: repeat-x;
+      }
+    }
+  }
+}
+
+.card-group{
+  display: flex;
+  flex-direction: column;
+  gap: 72px;
+  .card-item{
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .horizontal-card-small{
     display: flex;
     flex-direction: column;
     gap: 24px;
-  }
-  .card{
-    background-color: white;
-    box-shadow: 0px 4px 4px rgb(0, 0, 0,0.25);
-    border-radius: 8px;
-    width: 100%;
-    display: grid;
-    grid-template-columns:1fr minmax(502px, auto);
-    height: 144px;
+    grid-column: 2 / 6; 
+    img{
+      width: 100%;
+      aspect-ratio: 16/9;
+    }
     .content{
       display: flex;
       flex-direction: column;
       justify-content: center;
-      box-sizing: border-box;
-      padding-left: 24px;
-      color: #716FB8;
+      align-items: flex-start;
+      gap: 8px;
     }
-    .title{
-      font-size: 22px;
-      line-height: 28px;
-    }
-    .subtitle{
-      font-size: 12px;
-      line-height: 16px;
-    }
-    .img{
-      width: 502px;
-      position: relative;
-      overflow: hidden;
-      .decorate{
-        position: absolute;
-        z-index: 1;
-      }
-      .mask {
-        background:linear-gradient(rgba(0, 0, 0, 0.10)), url("https://cdn.zekkei-japan.jp/images/articles/c34ca50f2d11c2486a79c6457f710059.jpg") no-repeat center center;
-        background-size: cover;
-        mask: url("/Subtract.svg") no-repeat top center;
+  }
+
+  .vertical-card-small{
+    display: grid;
+    grid-template-columns: repeat(2 ,1fr);
+    align-items: center;
+    gap: 24px;
+    .card-img{
+      display: flex;
+      flex-direction: column;
+      gap:24px;
+      img{
         width: 100%;
-        height: 100%;
-        opacity: 80%;
-        border-top-right-radius: 8px;
-        border-bottom-right-radius: 8px;
-        cursor: pointer;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;  
+        box-shadow: 0px 4px 4px rgba($black, 0.25);
       }
-      .light{
+    }
+    .content{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 8px;
+    }
+  }
 
-
-      }
-      &:hover{
-        .light ,.light.two{
-          position: absolute;
-          background: white;
-          height: 100%;
-          z-index: 2;
-          left: 36px;
-           filter: blur(10px);
-        }
-        .light{
-          width: 80px;
-          animation: slide 0.5s  ease-in forwards; 
-        }
-        .light.two{
-          width: 80px;
-          animation: slide2 0.5s  ease-in forwards; 
-        }
-        
-      }
+  // 手機版：後製小卡佔滿整欄，卡片之間間隔縮小
+  @media (max-width: 767px){
+    gap: 24px;
+    .horizontal-card-small{
+      grid-column: 1 / -1;
+      gap: 16px;
+    }
+    .vertical-card-small{
+      gap: 16px;
     }
   }
 }
 
-@keyframes slide {
-  0% { 
-    transform: translateX(200px) skewX(135deg); 
-    opacity: 20%;
+
+.quote-cta{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin: 48px auto 24px;
+  .quote-cta-text{
+    font-size: 22px;
+    line-height: 28px;
+    color: $primary;
   }
-  50% { 
-    transform: translateX(300px) skewX(135deg); 
-    opacity: 40%;
-  }
-  100% { 
-    transform: translateX(582px) skewX(135deg); 
-    opacity: 0%;
+  .quote-cta-btn{
+    display: inline-block;
+    padding: 12px 40px;
+    border-radius: 4px;
+    background-color: $primary;
+    color: $white;
+    font-size: 16px;
+    line-height: 24px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    &:hover{
+      background-color: $purple-500;
+    }
   }
 }
 
-@keyframes slide2 {
-  0% { 
-    transform: translateX(-240px) skewX(135deg); 
-    opacity: 80%;
+// horizontal-card / vertical-card 圖片輪播：.card-img 裡放 2 張以上的 <img> 就會自動輪播（由 main.js 加上 .is-carousel 並包一層 .carousel-track）
+// 圖片橫向排成一列，移動 track 做橫向滑動
+.menu-bg .horizontal-card .card-img.is-carousel,
+.menu-bg .vertical-card .card-img.is-carousel{
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0px 4px 4px rgba($black, 0.25);
+  touch-action: pan-y; // 手機：上下捲動交給瀏覽器，左右滑動交給輪播
+  .carousel-track{
+    display: flex;
+    transition: transform 0.6s ease;
   }
-  100% { 
-    transform: translateX(100px) skewX(135deg); 
-    opacity: 0%;
+  img{
+    flex: 0 0 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    box-shadow: none;
   }
+  // 左右箭頭：疊在圖片上不佔版面，桌機滑鼠移上去才淡入
+  .carousel-prev,
+  .carousel-next{
+    position: absolute;
+    z-index: 1; // 箭頭在 HTML 裡排在 .carousel-track 前面，track 有 transform 會蓋住箭頭，所以要拉高
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba($white, 0.8);
+    color: $gray-900; // 箭頭顏色（SVG 用 currentColor）
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .carousel-prev{
+    left: 8px;
+  }
+  .carousel-next{
+    right: 8px;
+  }
+  &:hover,
+  &:focus-within{
+    .carousel-prev,
+    .carousel-next{
+      opacity: 1;
+    }
+  }
+  // 手機等沒有滑鼠的裝置不顯示箭頭，改用滑動
+  @media (hover: none){
+    .carousel-prev,
+    .carousel-next{
+      display: none;
+    }
+  }
+}
+// vertical-card 維持原本的直式比例
+.menu-bg .vertical-card .card-img.is-carousel img{
+  aspect-ratio: 9 / 16;
+}
+
+// 名片浮水印左右輕晃：右 → 左 → 小幅右 → 回中間定住（角度越大晃越明顯）
+@keyframes watermark-wiggle{
+  0%   { transform: rotate(0deg); }
+  20%  { transform: rotate(8deg); }
+  45%  { transform: rotate(-6deg); }
+  70%  { transform: rotate(3deg); }
+  100% { transform: rotate(0deg); }
 }

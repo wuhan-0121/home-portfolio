@@ -1,0 +1,115 @@
+@use '../base/variables' as *;
+
+.qa-list{
+  width: 100%;
+  max-width: 1032px;
+  margin: 24px auto;
+  box-sizing: border-box;
+  padding: 0px 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.qa-item{
+  border-bottom: 1px solid $gray-200;
+  &:last-child{
+    border-bottom: none;
+  }
+}
+
+.qa-question{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 24px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  font-size: 18px;
+  line-height: 28px;
+  color: $primary;
+  .qa-arrow{
+    // 箭頭在 layout/qa-arrow.ejs，展開時旋轉 180 度，時間跟內容展開一樣 0.3s
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    margin: -6px -10px -6px 0; // svg 外框有留白，抵銷掉避免撐高標題列、跟右邊對齊
+    color: $primary;
+    transition: transform 0.3s;
+    svg{
+      display: block;
+    }
+  }
+}
+
+// 用 grid-template-rows 0fr → 1fr 做高度展開動畫，不用寫死高度
+.qa-answer{
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s;
+  .qa-answer-inner{
+    overflow: hidden;
+    padding: 0px 24px;
+    font-size: 16px;
+    line-height: 24px;
+    color: $gray-500;
+    transition: padding 0.3s;
+  }
+  // 每組回覆用 01、02… 編號
+  .qa-points{
+    padding-left: 0;
+    list-style: none;
+    counter-reset: qa-point;
+    > li{
+      position: relative;
+      & + li{
+        margin-top: 8px;
+      }
+      padding-left: 32px;
+      counter-increment: qa-point;
+      &::before{
+        content: counter(qa-point, decimal-leading-zero);
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-weight: 700;
+        color: $purple-300;
+      }
+    }
+  }
+  .qa-point-title{
+    font-weight: 700;
+    color: $gray-600;
+    // 價目表頁：項目名稱和價格左右對齊
+    .price{
+      float: right;
+      margin-left: 16px;
+      color: $primary;
+    }
+  }
+  // 價目表頁：整組項目共用的備註
+  .qa-remark{
+    margin-top: 12px;
+    font-size: 14px;
+    color: $gray-400;
+  }
+  .qa-notes{
+    padding-left: 0;
+    list-style: none;
+  }
+}
+
+.qa-item.is-open{
+  .qa-arrow{
+    transform: rotate(180deg);
+  }
+  .qa-answer{
+    grid-template-rows: 1fr;
+  }
+  .qa-answer-inner{
+    padding-bottom: 16px;
+  }
+}

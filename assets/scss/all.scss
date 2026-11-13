@@ -1,7 +1,8 @@
 @use './base/reset';
 
-@use './layout/nav';
+@use './layout/header';
 @use './layout/footer';
 
 @use './pages/index';
 @use './pages/portfolio';
+@use './pages/entrustment-notice';@use './pages/price-list';

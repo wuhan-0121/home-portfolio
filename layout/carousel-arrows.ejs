@@ -1,0 +1,17 @@
+<%#
+  ===== 輪播左右箭頭 =====
+  放在 pages/index.html 的 horizontal-card / vertical-card 的 .card-img 裡（跟 <img> 放一起）。
+  main.js 會抓這兩顆按鈕綁定上一張／下一張；.card-img 只有 1 張圖時按鈕會被移除。
+  箭頭顏色跟著按鈕的 color（fill="currentColor"），在 _index.scss 的 .carousel-prev / .carousel-next 改。
+  只有一個往左的箭頭圖案，下一張的箭頭用 CSS 左右翻轉。
+%>
+<button type="button" class="carousel-prev" aria-label="上一張">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16 22L6 12L16 2L17.775 3.775L9.55 12L17.775 20.225L16 22Z" fill="currentColor"/>
+  </svg>
+</button>
+<button type="button" class="carousel-next" aria-label="下一張">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M8.025 22L6.25 20.225L14.475 12L6.25 3.775L8.025 2L18.025 12L8.025 22Z" fill="currentColor"/>
+  </svg>
+</button>

@@ -1,0 +1,33 @@
+// ===== 色票 =====
+// 要用的檔案開頭加：@use '../base/variables' as *;
+// （@use 不會自動共用，每個 partial 都要自己引入）
+
+// 紫色系：數字越大越深
+$purple-50:  #F3F2FF;
+$purple-100: #E2DFFF;
+$purple-200: #C3C0FF;
+$purple-300: #B3B1E0;
+$purple-400: #A6A3F1;
+$purple-500: #8B89D4; // 主色
+$purple-600: #716FB8; 
+$purple-700: #5A5892;
+$purple-800: #403E84;
+$purple-vivid: #5B45F0; // 高彩度紫（同色相、更鮮豔），用在名片浮水印定格
+
+// 粉色系
+$pink-400: #F4A7C4;
+
+// 灰色系：數字越大越深
+$gray-50:  #F9F9F9;
+$gray-200: #E2E2E2;
+$gray-300: #C6C6C6;
+$gray-400: #999999;
+$gray-500: #777777;
+$gray-600: #555555;
+$gray-900: #1C1B1F;
+
+$white: #FFFFFF;
+$black: #000000;
+
+// 語意別名：改主色只要改這裡
+$primary: $purple-500;
