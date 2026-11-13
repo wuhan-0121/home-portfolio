@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "deploy": "vite build && gh-pages -d dist"
+    "deploy": "vite build && gh-pages -d dist",
+    "deploy:client": "BASE=/home-portfolio/ vite build && gh-pages -d dist -r https://github.com/wuhan-0121/home-portfolio.git"
   },
   "devDependencies": {
     "vite": "^8.3.0"

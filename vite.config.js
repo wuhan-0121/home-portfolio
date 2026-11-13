@@ -55,7 +55,8 @@ function moveOutputPlugin() {
 export default defineConfig(({ command }) => ({
   // base 的寫法：
   // base: '/Repository 的名稱/'
-  base: command === 'build' ? '/morte/' : '/',
+  // 部署給客戶時用 BASE 環境變數覆蓋（見 package.json 的 deploy:client）
+  base: command === 'build' ? process.env.BASE || '/morte/' : '/',
   plugins: [
     // 這些檔案有變動時，瀏覽器自動重新整理（多加了 data 資料夾）
     liveReload(['./layout/**/*.ejs', './pages/**/*.html', './data/**/*.json']),
