@@ -1,18 +1,28 @@
 @use '../base/variables' as *;
 
+// 電腦版一排幾個：3 或 4，改這裡就好
+$portfolio-cols: 4;
+
 .portfolio{
-  background-color: $gray-50;
+  background-color: $page-bg; // 頁面底色，在 _variables.scss 統一設定
   display: flex;
   flex-direction: column;
   align-items: center;
   .portfolio-container{
     box-sizing: border-box;
-    padding: 0px 24px 80px; // 底部 80px：跟 footer 拉開距離（有分頁、暫無內容都適用）
+    padding: 0px 16px 80px; // 底部 80px：跟 footer 拉開距離（有分頁、暫無內容都適用）
     width: 100%;
+    max-width: 1032px; // 跟首頁、委託細項同寬（含左右 padding 16px）
     display: grid;
-    grid-template-columns: repeat(auto-fill, min(328px, 100%));
-    justify-content: center;
+    // 影片寬度跟著內容區平均分：手機 1 欄、平板 2 欄、電腦 $portfolio-cols 欄
+    grid-template-columns: 1fr;
     column-gap: 24px;
+    @media (min-width: 768px){
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media (min-width: 1024px){
+      grid-template-columns: repeat($portfolio-cols, 1fr);
+    }
   }
   .video-tabs,
   .line,

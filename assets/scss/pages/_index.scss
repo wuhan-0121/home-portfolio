@@ -2,108 +2,188 @@
 
 .index-container{
  padding-bottom: 24px;
+ background-color: $page-bg; // 頁面底色，在 _variables.scss 統一設定
 }
 
+
+$hero-bg: color-mix(in srgb, $purple-700 80%, black); // hero 底色，缺口遮罩也用同一個，顏色才會一致
+$frame-offset: 6px;
 
 .hero{
+  background-color: $hero-bg;
+  max-width: 1032px;
+  margin: 0 auto;
+
+  // ===== 共用：兩版都一樣的東西 =====
+  .video-container{
+    box-sizing: border-box;
+  }
+  .frame-gap,
+  .video-deco .ornament{
+    display: none;   // 手機版沒有框，缺口、裝飾花紋也不用
+  }
+  .video-deco{
+    color: $purple-100;
+    .social{
+      display: flex;   // FB、DC 一組橫排
+      gap: 16px;
+    }
+    // 字級、字距放共用，兩版都有大小層次
+    .name{
+      font-size: 24px;
+      font-weight: 700;
+    }
+    .job{
+      letter-spacing: 0.1em;
+    }
+    .fb, .dc{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      a{
+        display: flex;
+        color: inherit;  // 不吃瀏覽器預設的連結色（深紫），icon 用 currentColor 會跟文字同色
+      }
+      svg{
+        width: 24px;   // HTML 上寫的是 48，這裡縮成 24
+        height: 24px;
+      }
+    }
+  }
   video{
     display: block;
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    max-height: 600px;
     width: 100%;
     object-fit: cover;
+    aspect-ratio: 16 / 9;
   }
-}
 
-// 名片區：只放一張名片，置中
-.business-card{
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  max-width: 1032px;
-  margin: 24px auto;
-  box-sizing: border-box;
-  // 名片：360×216 的框，裡面放客戶提供的圖檔，浮水印疊在右下角
-  .business-card-content{
-    --wiggle-speed: 0.9s; // hover 時浮水印晃動的時間
-    position: relative;
-    width: 360px;
-    height: 216px;
-    box-sizing: border-box;
-    background-color: rgb(74, 44, 106); // 圖還沒載入時的底色
-    box-shadow: 0px 0px 4px 1px rgba($primary, 0.25);
-    border-radius: 4px;
-    overflow: hidden; // 浮水印超出卡片的部分裁掉
-
-    // 名片圖檔：填滿整個框，比例不同時裁切置中
-    .card-image{
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+  // ===== 電腦版：外框 + deco 環繞在四周 =====
+  @media (min-width: 768px){
+    padding: 64px 0;   // 上下留空間給外框外面的 deco 文字
+    .video-container{
+      position: relative;   // 讓 .video-deco 的 absolute 以這層為基準
+      max-width: calc(640px + 16px * 2); // 影片 640 + 左右各 16px 外框 = 672
+      margin: 0 auto;
+      padding: 16px;
+      // 雙條框：跟選單 hover 的 .lace 一樣，兩條框各自往反方向錯開 $frame-offset
+      &::before,
+      &::after{
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+      &::before{
+        border: 2px solid $purple-100;     // 同選單 .lace.first
+        transform: translate($frame-offset, $frame-offset);    // 往右下
+      }
+      &::after{
+        border: 1.5px solid $purple-500;   // 同選單 .lace.two
+        transform: translate(-$frame-offset, -$frame-offset);  // 往左上
+      }
+      // 缺口：用跟 .hero 一樣的底色蓋住框線（同選單 .lace.three / .lace.four）
+      .frame-gap{
+        display: block;
+        position: absolute;
+        z-index: 1;
+        height: $frame-offset * 4;          // 要夠高才能同時蓋住兩條線
+        background-color: $hero-bg;
+        &.top{
+          top: -$frame-offset * 2;
+          left: 12%;
+          width: 12%;
+        }
+        &.bottom{
+          bottom: -$frame-offset * 2;
+          right: 20%;
+          width: 20%;
+        }
+      }
+    }
+    // 疊在外框上、跟外框一樣大的定位層，裡面每個項目各自 absolute 擺到四周
+    .video-deco{
+      position: absolute;
+      inset: 0;
+      z-index: 2;             // 文字疊在缺口色塊上面
+      pointer-events: none;   // 不擋到影片
+      > *{
+        position: absolute;
+        pointer-events: auto; // 連結還是可以點
+        white-space: nowrap;
+      }
+      // 第一行（外框上方）：名字靠左、職稱置中、作品類型靠右
+      .name{
+        bottom: calc(100% + #{$frame-offset * 2 + 8px});
+        left: 0;
+      }
+      .job{
+        bottom: calc(100% + #{$frame-offset * 2 + 8px});
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .work-projects{
+        bottom: calc(100% + #{$frame-offset * 2 + 8px});
+        right: 0;
+      }
+      // 下方左邊：菱形裝飾，底部對齊 FB/DC 那一行，往上疊在外框左下角
+      .ornament{
+        z-index: 3;            // 疊在外框、缺口、影片上面
+        bottom: -($frame-offset * 2 + 8px + 24px); // 底邊對齊下方 FB/DC 那一行
+        left: 0;
+        pointer-events: none;  // 純裝飾，不擋到影片
+        opacity: 0.7;          // 整組透明度（深色菱形就是這個值），0 全透明 ～ 1 不透明
+        display: flex;         // 一整排：大菱形在前，四個小菱形在後
+        align-items: center;
+        gap: 8px;              // 小菱形之間 8px
+        img{
+          width: 39px;         // 小菱形：同一張圖縮小（原圖 79px 的一半）
+          height: auto;
+        }
+        .main{
+          width: auto;         // 大菱形維持原圖大小
+          margin-right: 8px;   // 再加 8px，跟小菱形之間共 16px
+        }
+        // 深淺深淺深：第 2、4 個（小菱形的第 1、3 個）調淡
+        img:nth-child(even){
+          opacity: 0.4;            // 再乘上外層的 0.7，實際約 0.28
+        }
+      }
+      // 第二行（外框下方）：FB、Discord 一組，靠右但內縮
+      .social{
+        top: calc(100% + #{$frame-offset * 2 + 8px});
+        right: 24px;     // 離外框右邊 48px
+        gap: 24px;       // FB 跟 DC 之間
+      }
+      .fb, .dc{
+        gap: 6px;
+        svg{
+          width: 18px;   // 電腦版 icon 小一點（手機版維持共用的 24px）
+          height: 18px;
+        }
+      }
     }
   }
 
-  // 浮水印：public/水印底.svg 的圖（svg 直接寫在 pages/index.html），放大、斜放在右下角
-  // 圖是用 currentColor 上色，改 --watermark-color 就能換填色
-  .card-watermark{
-    --watermark-color: #{$purple-600}; // 浮水印顏色，想換改這裡
-    position: absolute;
-    right: -40px;
-    bottom: -40px;
-    width: 200px;
-    height: 200px;
-    color: var(--watermark-color);
-    transform: rotate(-20deg); // 傾斜角度：負數越大越往左轉
-    pointer-events: none;
-    svg{
-      display: block;
-      width: 100%;
-      height: 100%;
-      transform-origin: 50% 80%; // 晃動的支點，偏下面一點像不倒翁
-    }
-  }
-  // hover 名片時浮水印左右晃動；晃動的幅度、次數在 @keyframes watermark-wiggle 調
-  .business-card-content:hover .card-watermark svg{
-    animation: watermark-wiggle var(--wiggle-speed) ease-in-out;
-  }
-
-  // 系統開了「減少動態效果」的使用者：不晃
-  @media (prefers-reduced-motion: reduce){
-    .business-card-content:hover .card-watermark svg{
-      animation: none;
-    }
-  }
-
-  // 手機版：左右留白
+  // ===== 手機版：影片滿版，資訊照順序排在影片下方 =====
   @media (max-width: 767px){
-    padding: 24px 16px;
-    .business-card-content{
-      max-width: 100%; // 螢幕比 360px 還窄時不要撐破版面
+    .video-container{
+      display: flex;
+      flex-direction: column;
     }
-  }
-}
-
-.line{
-  display: flex;
-  justify-content: center;
-  svg{
-    fill: $purple-100;
-    // 電腦版：佔滿內容寬度（最寬 1032px，跟 business-card、卡片區同寬），高度等比例
-    width: 100%;
-    max-width: 1032px;
-    height: auto;
-  }
-  // 手機版：原本整條 1032px 會被縮到螢幕寬，花紋變很小
-  // 改成固定 640px 寬、左右超出的部分裁掉，只留中間對稱的那段
-  @media (max-width: 767px){
-    overflow: hidden;
-    svg{
-      flex-shrink: 0;
-      width: 640px;
-      height: auto;
+    .video-deco{
+      order: 2;        // HTML 裡 deco 在影片前面，用 order 移到影片下方；拿掉就會在上方
+      padding: 24px;   // 影片滿版，文字四周留 24px
+      display: flex;
+      flex-wrap: wrap;     // 橫排，排不下自動換行
+      align-items: center;
+      justify-content: center; // FB、DC 那行置中
+      text-align: center;      // 佔滿整行的文字置中
+      gap: 8px 16px;       // 上下 8px、左右 16px
+      // 四行：名字 / 職稱 / 作品類型 / FB＋DC
+      // 想要五行（FB、DC 也各自一行），給 .social 加 flex-direction: column
+      .name, .job, .work-projects{
+        flex-basis: 100%;  // 各自獨佔一行
+      }
     }
   }
 }
@@ -112,8 +192,9 @@
   width: 100%;
   max-width: 1032px; // 電腦版最寬 1032px，螢幕比較窄時跟著縮
   box-sizing: border-box;
-  padding: 16px;
+  padding: 16px 32px;
   margin: 24px auto;
+  background-color: white;
 
   .tag{
     font-size: 14px;
@@ -137,6 +218,37 @@
     line-height: 40px;
     color: $primary;
     font-weight: 500;
+  }
+  // 卡片的 more：連到 portfolio 對應分類（?filter=xxx，由 main.js 讀取）
+  .more-link{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 4px;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.05em;
+    color: $primary;
+    text-decoration: none;
+    span{
+      // 細底線，hover 時從淺紫變主色
+      padding-bottom: 2px;
+      border-bottom: 1px solid $purple-200;
+      transition: border-color 0.2s ease;
+    }
+    svg{
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+    &:hover,
+    &:focus-visible{
+      span{
+        border-bottom-color: $primary;
+      }
+      svg{
+        transform: translateX(4px);
+      }
+    }
   }
   .horizontal-card{
     display: grid;
@@ -252,9 +364,12 @@
     flex-direction: column;
     gap: 24px;
     grid-column: 2 / 6; 
-    img{
+    img,
+    video{
+      display: block;
       width: 100%;
       aspect-ratio: 16/9;
+      object-fit: cover;
     }
     .content{
       display: flex;
@@ -274,7 +389,9 @@
       display: flex;
       flex-direction: column;
       gap:24px;
-      img{
+      img,
+      video{
+        display: block;
         width: 100%;
         aspect-ratio: 16 / 9;
         object-fit: cover;  
@@ -394,13 +511,4 @@
 // vertical-card 維持原本的直式比例
 .menu-bg .vertical-card .card-img.is-carousel img{
   aspect-ratio: 9 / 16;
-}
-
-// 名片浮水印左右輕晃：右 → 左 → 小幅右 → 回中間定住（角度越大晃越明顯）
-@keyframes watermark-wiggle{
-  0%   { transform: rotate(0deg); }
-  20%  { transform: rotate(8deg); }
-  45%  { transform: rotate(-6deg); }
-  70%  { transform: rotate(3deg); }
-  100% { transform: rotate(0deg); }
 }

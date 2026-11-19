@@ -151,7 +151,6 @@ nav{
       height: 2px;
       border-radius: 1px;
       background-color: $gray-500;
-      transition: transform .3s, opacity .3s;
     }
   }
 
@@ -164,28 +163,69 @@ nav{
   }
 
   @media (max-width: 767px){
+    // 手機版：Logo 在左、漢堡按鈕在右
     grid-template-columns: auto 1fr;
 
     .nav-toggle{
       display: flex;
     }
 
-    // 選單改成從 header 下方展開的下拉清單
+    // 選單改成從左邊滑出的側邊抽屜，header 保持在上面（X 按鈕看得到）
     .nav-links{
-      display: none;
-      position: absolute;
-      top: 100%;
+      position: fixed;
+      top: 80px; // header 高度
+      bottom: 0;
       left: 0;
-      right: 0;
+      z-index: 2;
+      width: min(80vw, 300px);
       flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      padding: 16px 0 24px;
+      align-items: stretch;
+      gap: 8px;
+      padding: 24px 16px;
+      overflow-y: auto;
       background-color: $white;
-      box-shadow: 0 8px 16px rgba($black, .08);
+      box-shadow: 8px 0 16px rgba($black, .08);
+      transform: translateX(-100%);
+      visibility: hidden; // 收合時也不能用 Tab 選到裡面的連結
+      transition: transform .3s ease, visibility 0s .3s;
+      a{
+        width: 100%;
+        justify-content: flex-start;
+      }
     }
-    &.is-open .nav-links{
-      display: flex;
+
+    // 右邊的半透明遮罩，點了會關閉選單（main.js）
+    &::after{
+      content: '';
+      position: fixed;
+      top: 80px;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+      background-color: rgba($black, .4);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s ease;
+    }
+
+    &.is-open{
+      .nav-links{
+        transform: translateX(0);
+        visibility: visible;
+        transition: transform .3s ease;
+      }
+      &::after{
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .nav-links,
+      &::after{
+        transition: none;
+      }
     }
   }
 

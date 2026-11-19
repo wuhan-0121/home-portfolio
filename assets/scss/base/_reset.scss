@@ -9,6 +9,23 @@
 html {
   scrollbar-gutter: stable;
 }
+
+// footer 置底：內容不夠高時（例如委託細項全部收合），中間內容區自動撐滿，把 footer 推到畫面最下面
+body {
+  min-height: 100vh;
+  min-height: 100dvh; // 手機瀏覽器網址列收合時的實際高度，不支援的瀏覽器會用上一行
+  display: flex;
+  flex-direction: column;
+}
+// 手機版選單開著時鎖住頁面捲動（main.js 加上）
+body.nav-locked {
+  overflow: hidden;
+}
+.index-container,
+.entrustment-container,
+.portfolio {
+  flex: 1 0 auto;
+}
 div {
     margin: 0;
     padding: 0;

@@ -1,6 +1,6 @@
 import './assets/scss/all.scss'
 
-// header：手機版漢堡選單，點按鈕展開／收合，點選單外面或按 Esc 收合
+// header：手機版左側抽屜選單，點按鈕展開／收合，點遮罩、選單外面或按 Esc 收合
 const nav = document.querySelector('nav')
 const navToggle = nav?.querySelector('.nav-toggle')
 
@@ -9,10 +9,13 @@ if (nav && navToggle) {
     nav.classList.toggle('is-open', isOpen)
     navToggle.setAttribute('aria-expanded', isOpen)
     navToggle.setAttribute('aria-label', isOpen ? '關閉選單' : '開啟選單')
+    // 選單開著時鎖住後面頁面的捲動
+    document.body.classList.toggle('nav-locked', isOpen)
   }
   navToggle.addEventListener('click', () => setNavOpen(!nav.classList.contains('is-open')))
+  // 遮罩是 nav 的 ::after，點到時 e.target 是 nav 本身
   document.addEventListener('click', (e) => {
-    if (!nav.contains(e.target)) setNavOpen(false)
+    if (!nav.contains(e.target) || e.target === nav) setNavOpen(false)
   })
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') setNavOpen(false)
@@ -115,7 +118,13 @@ if (videoGroup && pagination) {
   })
   prevBtn.addEventListener('click', () => goToPage(currentPage - 1))
   nextBtn.addEventListener('click', () => goToPage(currentPage + 1))
-  filterBy('all')
+  // 首頁 more 連結會帶 ?filter=xxx，進來時直接切到該分類並捲到分類列
+  const initialFilter = new URLSearchParams(location.search).get('filter')
+  const hasInitialTab = tabs.some((tab) => tab.dataset.filter === initialFilter)
+  filterBy(hasInitialTab ? initialFilter : 'all')
+  if (hasInitialTab) {
+    document.querySelector('.video-tabs')?.scrollIntoView({ block: 'start' })
+  }
 }
 
 // 委託須知：QA 展開選單，點問題按鈕切換展開／收合（可同時展開多個）

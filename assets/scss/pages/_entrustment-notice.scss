@@ -1,5 +1,11 @@
 @use '../base/variables' as *;
 
+// 委託須知、價目表共用這個外層：頁面底色在 _variables.scss 統一設定
+.entrustment-container{
+  background-color: $page-bg;
+  display: flow-root; // 防止裡面第一個/最後一個區塊的 margin 跑到外面，上下露出白邊
+}
+
 .qa-list{
   width: 100%;
   max-width: 1032px;
